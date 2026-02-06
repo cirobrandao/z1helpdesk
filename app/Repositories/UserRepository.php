@@ -8,9 +8,12 @@ final class UserRepository extends BaseRepository
 {
     public function findByLogin(string $login): ?array
     {
-        $sql = 'SELECT * FROM users WHERE email = :login OR username = :login LIMIT 1';
+        $sql = 'SELECT * FROM users WHERE email = :login_email OR username = :login_username LIMIT 1';
         $stmt = $this->pdo()->prepare($sql);
-        $stmt->execute(['login' => $login]);
+        $stmt->execute([
+            'login_email' => $login,
+            'login_username' => $login,
+        ]);
         $user = $stmt->fetch();
         return $user ?: null;
     }
