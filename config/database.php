@@ -7,11 +7,11 @@ return [
     'connections' => [
         'mysql' => [
             'driver' => 'mysql',
-            'host' => getenv('DB_HOST') ?: '127.0.0.1',
-            'port' => (int) (getenv('DB_PORT') ?: 3306),
-            'database' => getenv('DB_DATABASE') ?: 'z1helpdesk',
-            'username' => getenv('DB_USERNAME') ?: 'root',
-            'password' => getenv('DB_PASSWORD') ?: '',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => (int) env('DB_PORT', 3306),
+            'database' => env('DB_DATABASE', 'z1helpdesk'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
         ],

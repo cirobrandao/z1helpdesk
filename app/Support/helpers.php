@@ -13,6 +13,20 @@ if (!function_exists('config')) {
     }
 }
 
+if (!function_exists('env')) {
+    function env(string $key, mixed $default = null): mixed
+    {
+        if (array_key_exists($key, $_ENV)) {
+            return $_ENV[$key];
+        }
+        if (array_key_exists($key, $_SERVER)) {
+            return $_SERVER[$key];
+        }
+        $value = getenv($key);
+        return $value === false ? $default : $value;
+    }
+}
+
 if (!function_exists('__')) {
     function __(string $key, array $params = []): string
     {
