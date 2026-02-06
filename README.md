@@ -42,6 +42,16 @@ mysql -u root -p z1helpdesk < sql/060_audit.sql
 mysql -u root -p z1helpdesk < sql/900_seed.sql
 ```
 
+Optional helper scripts:
+
+```bash
+scripts/import-all.sh
+```
+
+```powershell
+scripts/import-all.ps1
+```
+
 4) Nginx:
 
 Use the example in docs/nginx.conf.example and point root to public/.
