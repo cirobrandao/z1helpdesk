@@ -3,10 +3,15 @@
         <a class="navbar-brand" href="/admin">Z1 Helpdesk</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="/admin/users">Users</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/teams">Teams</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/customers">Customers</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/organizations">Organizations</a></li>
                 <li class="nav-item"><a class="nav-link" href="/admin/departments">Departments</a></li>
                 <li class="nav-item"><a class="nav-link" href="/admin/sectors">Sectors</a></li>
                 <li class="nav-item"><a class="nav-link" href="/admin/faqs">FAQ</a></li>
                 <li class="nav-item"><a class="nav-link" href="/admin/tickets">Tickets</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/settings">Settings</a></li>
             </ul>
             <form method="post" action="/admin/logout" class="d-flex">
                 <input type="hidden" name="_csrf" value="<?= htmlspecialchars(\App\Security\Csrf::token()) ?>">

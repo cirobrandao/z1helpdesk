@@ -29,4 +29,20 @@ final class Config
         }
         return $value;
     }
+
+    public static function set(string $key, mixed $value): void
+    {
+        $segments = explode('.', $key);
+        $ref = &self::$items;
+        foreach ($segments as $segment) {
+            if (!is_array($ref)) {
+                $ref = [];
+            }
+            if (!array_key_exists($segment, $ref)) {
+                $ref[$segment] = [];
+            }
+            $ref = &$ref[$segment];
+        }
+        $ref = $value;
+    }
 }

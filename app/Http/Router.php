@@ -39,8 +39,31 @@ final class Router
         $sectorPerm = new \App\Http\Middleware\RbacMiddleware('sectors.manage');
         $faqPerm = new \App\Http\Middleware\RbacMiddleware('faq.manage');
         $ticketPerm = new \App\Http\Middleware\RbacMiddleware('tickets.manage_all');
+        $usersPerm = new \App\Http\Middleware\RbacMiddleware('users.manage');
+        $teamsPerm = new \App\Http\Middleware\RbacMiddleware('teams.manage');
+        $orgsPerm = new \App\Http\Middleware\RbacMiddleware('orgs.manage');
+        $settingsPerm = new \App\Http\Middleware\RbacMiddleware('settings.manage');
 
         $this->get('/admin', [\App\Http\Controllers\AdminController::class, 'dashboard'], $auth);
+
+        $this->get('/admin/users', [\App\Http\Controllers\UserController::class, 'index'], array_merge($auth, [$usersPerm]));
+        $this->get('/admin/users/new', [\App\Http\Controllers\UserController::class, 'create'], array_merge($auth, [$usersPerm]));
+        $this->post('/admin/users', [\App\Http\Controllers\UserController::class, 'store'], array_merge($auth, [$usersPerm], $csrf));
+
+        $this->get('/admin/teams', [\App\Http\Controllers\TeamController::class, 'index'], array_merge($auth, [$teamsPerm]));
+        $this->get('/admin/teams/new', [\App\Http\Controllers\TeamController::class, 'create'], array_merge($auth, [$teamsPerm]));
+        $this->post('/admin/teams', [\App\Http\Controllers\TeamController::class, 'store'], array_merge($auth, [$teamsPerm], $csrf));
+
+        $this->get('/admin/customers', [\App\Http\Controllers\CustomerController::class, 'index'], array_merge($auth, [$orgsPerm]));
+        $this->get('/admin/customers/new', [\App\Http\Controllers\CustomerController::class, 'create'], array_merge($auth, [$orgsPerm]));
+        $this->post('/admin/customers', [\App\Http\Controllers\CustomerController::class, 'store'], array_merge($auth, [$orgsPerm], $csrf));
+
+        $this->get('/admin/organizations', [\App\Http\Controllers\OrganizationController::class, 'index'], array_merge($auth, [$orgsPerm]));
+        $this->get('/admin/organizations/new', [\App\Http\Controllers\OrganizationController::class, 'create'], array_merge($auth, [$orgsPerm]));
+        $this->post('/admin/organizations', [\App\Http\Controllers\OrganizationController::class, 'store'], array_merge($auth, [$orgsPerm], $csrf));
+
+        $this->get('/admin/settings', [\App\Http\Controllers\SettingsController::class, 'edit'], array_merge($auth, [$settingsPerm]));
+        $this->post('/admin/settings', [\App\Http\Controllers\SettingsController::class, 'update'], array_merge($auth, [$settingsPerm], $csrf));
         $this->get('/admin/departments', [\App\Http\Controllers\DepartmentController::class, 'index'], array_merge($auth, [$deptPerm]));
         $this->get('/admin/departments/new', [\App\Http\Controllers\DepartmentController::class, 'create'], array_merge($auth, [$deptPerm]));
         $this->post('/admin/departments', [\App\Http\Controllers\DepartmentController::class, 'store'], array_merge($auth, [$deptPerm], $csrf));
@@ -57,6 +80,7 @@ final class Router
         $this->get('/admin/tickets/{id}', [\App\Http\Controllers\TicketController::class, 'show'], array_merge($auth, [$ticketPerm]));
         $this->post('/admin/tickets/{id}/reply', [\App\Http\Controllers\TicketController::class, 'reply'], array_merge($auth, [$ticketPerm], $csrf));
         $this->post('/admin/tickets/{id}/close', [\App\Http\Controllers\TicketController::class, 'close'], array_merge($auth, [$ticketPerm], $csrf));
+        $this->post('/admin/tickets/{id}/assign', [\App\Http\Controllers\TicketController::class, 'assign'], array_merge($auth, [$ticketPerm], $csrf));
 
         $this->get('/client', [\App\Http\Controllers\ClientController::class, 'dashboard'], $auth);
         $this->get('/client/tickets/new', [\App\Http\Controllers\ClientController::class, 'createTicket'], $auth);

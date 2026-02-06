@@ -12,10 +12,15 @@ require __DIR__ . '/../../Components/admin_nav.php';
                 <h2 class="h5">Admin Dashboard</h2>
                 <p>Welcome back, <?= htmlspecialchars((string) ($user['name'] ?? 'Admin')) ?>.</p>
                 <div class="list-group">
+                    <a class="list-group-item" href="/admin/users">Manage Users</a>
+                    <a class="list-group-item" href="/admin/teams">Manage Teams</a>
+                    <a class="list-group-item" href="/admin/customers">Manage Customers</a>
+                    <a class="list-group-item" href="/admin/organizations">Manage Organizations</a>
                     <a class="list-group-item" href="/admin/departments">Manage Departments</a>
                     <a class="list-group-item" href="/admin/sectors">Manage Sectors</a>
                     <a class="list-group-item" href="/admin/faqs">Manage FAQ</a>
                     <a class="list-group-item" href="/admin/tickets">View Tickets</a>
+                    <a class="list-group-item" href="/admin/settings">Settings</a>
                 </div>
             </div>
         </div>

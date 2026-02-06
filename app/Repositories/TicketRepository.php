@@ -8,8 +8,9 @@ final class TicketRepository extends BaseRepository
 {
     public function all(): array
     {
-        $sql = 'SELECT t.*, c.name AS customer_name FROM tickets t
+        $sql = 'SELECT t.*, c.name AS customer_name, u.name AS assigned_name FROM tickets t
             LEFT JOIN customers c ON c.id = t.customer_id
+            LEFT JOIN users u ON u.id = t.assigned_user_id
             ORDER BY t.created_at DESC';
         $stmt = $this->pdo()->query($sql);
         return $stmt->fetchAll() ?: [];
@@ -28,7 +29,7 @@ final class TicketRepository extends BaseRepository
 
     public function find(int $id): ?array
     {
-        $stmt = $this->pdo()->prepare('SELECT * FROM tickets WHERE id = :id');
+        $stmt = $this->pdo()->prepare('SELECT t.*, u.name AS assigned_name FROM tickets t LEFT JOIN users u ON u.id = t.assigned_user_id WHERE t.id = :id');
         $stmt->execute(['id' => $id]);
         $ticket = $stmt->fetch();
         return $ticket ?: null;
@@ -77,6 +78,12 @@ final class TicketRepository extends BaseRepository
     {
         $stmt = $this->pdo()->prepare('UPDATE tickets SET status = :status WHERE id = :id');
         $stmt->execute(['status' => $status, 'id' => $ticketId]);
+    }
+
+    public function assign(int $ticketId, int $userId): void
+    {
+        $stmt = $this->pdo()->prepare('UPDATE tickets SET assigned_user_id = :user_id WHERE id = :id');
+        $stmt->execute(['user_id' => $userId, 'id' => $ticketId]);
     }
 
     public function addStatusHistory(int $ticketId, string $status, int $userId): void

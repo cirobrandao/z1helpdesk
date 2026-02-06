@@ -27,6 +27,7 @@ final class App
 
         LocaleResolver::resolve();
         Database::init();
+            (new \App\Services\SettingsService())->load();
 
         $router = new Router();
         $router->registerRoutes();

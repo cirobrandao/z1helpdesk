@@ -52,4 +52,16 @@ final class TicketService
             'details' => json_encode(['ticket_id' => $ticketId], JSON_UNESCAPED_SLASHES),
         ]);
     }
+
+    public function assign(int $ticketId, int $userId, int $assignedUserId): void
+    {
+        (new TicketRepository())->assign($ticketId, $assignedUserId);
+
+        (new AuditRepository())->log([
+            'user_id' => $userId,
+            'action' => 'ticket_assigned',
+            'ip_address' => $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0',
+            'details' => json_encode(['ticket_id' => $ticketId, 'assigned_user_id' => $assignedUserId], JSON_UNESCAPED_SLASHES),
+        ]);
+    }
 }
