@@ -28,6 +28,7 @@ final class Router
         $this->get('/public/tickets/new', [\App\Http\Controllers\PublicController::class, 'createTicket']);
         $this->post('/public/tickets', [\App\Http\Controllers\PublicController::class, 'storeTicket'], $csrf);
         $this->get('/public/tickets/{token}', [\App\Http\Controllers\PublicController::class, 'showTicket']);
+        $this->post('/public/tickets/{token}/reply', [\App\Http\Controllers\PublicController::class, 'replyTicket'], $csrf);
 
         $guest = [new \App\Http\Middleware\GuestMiddleware()];
         $this->get('/admin/login', [\App\Http\Controllers\AuthController::class, 'loginForm'], $guest);

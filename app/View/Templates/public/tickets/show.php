@@ -21,6 +21,25 @@ require __DIR__ . '/../../../Components/public_nav.php';
         <div class="alert alert-info">Save this link to track your ticket.</div>
     </div>
 </div>
+<div class="card shadow-sm mt-3">
+    <div class="card-body">
+        <h3 class="h6">Reply</h3>
+        <?php if (!empty($errors['message'])): ?>
+            <div class="alert alert-danger"><?= htmlspecialchars($errors['message']) ?></div>
+        <?php endif; ?>
+        <form method="post" action="/public/tickets/<?= htmlspecialchars((string) $ticket['public_token']) ?>/reply" enctype="multipart/form-data">
+            <input type="hidden" name="_csrf" value="<?= htmlspecialchars(\App\Security\Csrf::token()) ?>">
+            <div class="mb-3">
+                <textarea class="form-control" name="message" rows="4" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Attachment</label>
+                <input class="form-control" type="file" name="attachment">
+            </div>
+            <button class="btn btn-primary" type="submit">Send Reply</button>
+        </form>
+    </div>
+</div>
 <?php
 $content = ob_get_clean();
 $title = 'Ticket';

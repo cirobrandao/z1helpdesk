@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Request;
+use App\Http\Requests\TicketReplyRequest;
 use App\Http\Requests\TicketRequest;
 use App\Repositories\TicketRepository;
 use App\Services\TicketService;
+use App\Services\UploadService;
 
 final class PublicController extends Controller
 {
@@ -53,6 +55,36 @@ final class PublicController extends Controller
         }
 
         $messages = $repo->messages((int) $ticket['id']);
-        return $this->render('public/tickets/show', ['ticket' => $ticket, 'messages' => $messages]);
+        return $this->render('public/tickets/show', [
+            'ticket' => $ticket,
+            'messages' => $messages,
+            'errors' => [],
+        ]);
+    }
+
+    public function replyTicket(Request $request): string
+    {
+        $token = (string) ($request->params['token'] ?? '');
+        $repo = new TicketRepository();
+        $ticket = $repo->findByPublicToken($token);
+        if (!$ticket) {
+            http_response_code(404);
+            return 'Ticket not found.';
+        }
+
+        $validator = new TicketReplyRequest();
+        if (!$validator->validate($request->body)) {
+            return $this->render('public/tickets/show', [
+                'ticket' => $ticket,
+                'messages' => $repo->messages((int) $ticket['id']),
+                'errors' => $validator->errors(),
+            ]);
+        }
+
+        $messageId = $repo->addMessage((int) $ticket['id'], 0, (string) $request->input('message'));
+        (new UploadService())->handle($request->files['attachment'] ?? null, (int) $ticket['id'], $messageId);
+
+        redirect('/public/tickets/' . $token);
+        return '';
     }
 }
